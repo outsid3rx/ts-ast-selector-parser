@@ -1,0 +1,16 @@
+{
+  "name": "cast",
+  "version": "1.0.0",
+  "author": "Max Zernyaev <winterzz@internet.ru>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-kit": "^11.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "prettier": "^3.0.0"
+  }
+}

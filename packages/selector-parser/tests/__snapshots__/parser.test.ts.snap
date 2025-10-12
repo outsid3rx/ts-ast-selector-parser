@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Parser should create plan 1`] = `
+{
+  "combinators": [
+    "child",
+  ],
+  "steps": [
+    {
+      "attributes": [],
+      "node": {
+        "name": "ClassDeclaration",
+        "type": "tag",
+      },
+    },
+    {
+      "attributes": [
+        {
+          "attribute": "name",
+          "operator": "=",
+          "type": "attribute",
+          "value": "init",
+        },
+      ],
+      "node": {
+        "name": "MethodDeclaration",
+        "type": "tag",
+      },
+    },
+  ],
+}
+`;

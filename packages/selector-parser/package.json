@@ -1,0 +1,30 @@
+{
+  "name": "@cast/selector-parser",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsdown",
+    "build:dev": "tsdown --watch",
+    "lint": "eslint './{src,tests}/**/*.ts'",
+    "lint:fix": "eslint './{src,tests}/**/*.ts' --fix",
+    "test": "vitest ./tests"
+  },
+  "devDependencies": {
+    "tsdown": "^0.15.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "postcss-selector-parser": "^7.1.0"
+  },
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  }
+}
