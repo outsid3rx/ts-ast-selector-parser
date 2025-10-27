@@ -1,8 +1,8 @@
 # ts-ast-selector-parser
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/09ce871f-774d-4ae2-b9a5-cfbeb432130f/deploy-status)](https://app.netlify.com/projects/cast-selector-parser/deploys)
+[Демо](outsid3rx-ts-ast-selector-parser-e558.twc1.net)
 
-[Демо](https://cast-selector-parser.netlify.app/)
+![Демонстрация](./docs/demo.png)
 
 Пример использования CSS-подобного синтаксиса для поиска узлов в TypeScript AST.
 В приложении реализованы три варианта:
