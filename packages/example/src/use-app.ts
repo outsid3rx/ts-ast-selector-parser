@@ -1,35 +1,47 @@
-import { parseSelectorToPlan, querySelectorAll } from '@cast/selector-parser'
-import { useCallback, useRef, useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import ky from 'ky'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
-import { serializeNode } from './utils'
+import { DEFAULT_CODE, DEFAULT_SELECTOR } from './constants'
+
+type ParserType = 'custom' | 'tsquery' | 'esquery'
+
+interface IForm {
+  source: string
+  selector: string
+  type: ParserType
+}
 
 export const useApp = () => {
-  const [node, setNode] = useState<SerializedNode[]>([])
-  const selectorRef = useRef<HTMLInputElement>(null)
-  const codeRef = useRef<HTMLTextAreaElement>(null)
+  const form = useForm<IForm>({
+    defaultValues: {
+      source: DEFAULT_CODE,
+      selector: DEFAULT_SELECTOR,
+      type: 'custom',
+    },
+  })
+  const mutation = useMutation({
+    mutationFn: async ({
+      source,
+      selector,
+      type,
+    }: {
+      type: ParserType
+      source: string
+      selector: string
+    }) =>
+      await ky
+        .post(`/api/matcher/${type}`, { json: { source, selector } })
+        .json(),
+  })
 
-  const find = useCallback(() => {
-    if (!selectorRef.current || !codeRef.current) {
-      return
-    }
-
-    const selector = selectorRef.current.value
-    const code = codeRef.current.value
-
-    window.tsEnv.updateFile('/temp.ts', code)
-
-    setNode(
-      querySelectorAll(
-        parseSelectorToPlan(selector),
-        window.tsEnv.getSourceFile('/temp.ts')!,
-      ).map(serializeNode),
-    )
-  }, [])
+  const onSubmit: SubmitHandler<IForm> = (data) => mutation.mutate(data)
 
   return {
-    find,
-    node,
-    selectorRef,
-    codeRef,
+    node: mutation.data,
+    isLoading: mutation.isPending,
+    isError: mutation.isError,
+    form,
+    onSubmit,
   }
 }
