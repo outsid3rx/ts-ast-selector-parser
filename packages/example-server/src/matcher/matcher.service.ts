@@ -1,7 +1,10 @@
 import { parseSelectorToPlan, querySelectorAll } from '@cast/selector-parser'
-import { Injectable } from '@nestjs/common'
+import { Injectable, type OnModuleInit } from '@nestjs/common'
 import { ast, query } from '@phenomnomnominal/tsquery'
-import { createFSBackedSystem } from '@typescript/vfs'
+import {
+  createFSBackedSystem,
+  type VirtualTypeScriptEnvironment,
+} from '@typescript/vfs'
 import { parse } from '@typescript-eslint/typescript-estree'
 import { query as esQuery } from 'esquery'
 import type { Node } from 'estree'
@@ -14,27 +17,34 @@ type SerializedNode = Record<
 >
 
 @Injectable()
-export class MatcherService {
-  public matchCustom = async (source: string, selector: string) => {
+export class MatcherService implements OnModuleInit {
+  private vfsEnv: VirtualTypeScriptEnvironment
+
+  async onModuleInit() {
     const ts = await import('typescript')
     const vfs = await import('@typescript/vfs')
 
     const compilerOptions = { target: ts.ScriptTarget.ES2020, strict: true }
     const fsMap = new Map<string, string>()
-    fsMap.set('/temp.ts', source)
+    fsMap.set('/temp.ts', '"use strict"')
 
     const projectRoot = join(__dirname, '..')
     const system = createFSBackedSystem(fsMap, projectRoot, ts)
-    const env = vfs.createVirtualTypeScriptEnvironment(
+
+    this.vfsEnv = vfs.createVirtualTypeScriptEnvironment(
       system,
       ['/temp.ts'],
       ts,
       compilerOptions,
     )
+  }
+
+  public matchCustom = async (source: string, selector: string) => {
+    this.vfsEnv.updateFile('/temp.ts', source)
 
     return querySelectorAll(
       parseSelectorToPlan(selector),
-      env.getSourceFile('/temp.ts')!,
+      this.vfsEnv.getSourceFile('/temp.ts')!,
     ).map(this.serializeNode)
   }
 
