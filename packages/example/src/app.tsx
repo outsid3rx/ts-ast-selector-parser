@@ -1,4 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form'
+import { JSONTree } from 'react-json-tree'
 
 import {
   Button,
@@ -19,7 +20,7 @@ import {
   Textarea,
 } from '@/components/ui'
 
-import { DEFAULT_CODE, DEFAULT_SELECTOR } from './constants'
+import { DEFAULT_CODE, DEFAULT_SELECTOR, lightTheme } from './constants'
 import { ExampleSelector } from './example-selector'
 import type { IForm } from './types'
 import { useApp } from './use-app'
@@ -128,11 +129,10 @@ export const App = () => {
                 </DialogTrigger>
               </div>
               <div className="w-full">
-                <pre>{JSON.stringify(node, null, 2)}</pre>
+                <JSONTree data={node} theme={lightTheme} hideRoot />
               </div>
             </form>
           </Form>
-
           <ExampleSelector />
         </Dialog>
       </FormProvider>

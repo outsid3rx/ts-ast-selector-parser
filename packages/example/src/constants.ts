@@ -53,3 +53,22 @@ namespace B {
     },
   },
 ]
+
+export const lightTheme = {
+  base00: '#ffffff',
+  base01: '#f5f5f5',
+  base02: '#d0d0d0',
+  base03: '#a0a0a0',
+  base04: '#808080',
+  base05: '#212121',
+  base06: '#2e2e2e',
+  base07: '#1a1a1a',
+  base08: '#d32f2f',
+  base09: '#e65100',
+  base0A: '#0288d1',
+  base0B: '#689f38',
+  base0C: '#00796b',
+  base0D: '#3b78e7',
+  base0E: '#9c27b0',
+  base0F: '#ad1457',
+}
