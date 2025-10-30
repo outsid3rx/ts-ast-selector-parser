@@ -1,6 +1,6 @@
 # ts-ast-selector-parser
 
-[Демо](outsid3rx-ts-ast-selector-parser-e558.twc1.net)
+[Демо](https://outsid3rx-ts-ast-selector-parser-e558.twc1.net)
 
 ![Демонстрация](./docs/demo.png)
 
