@@ -1,4 +1,7 @@
-import { FormProvider, useForm } from 'react-hook-form'
+import { javascript } from '@codemirror/lang-javascript'
+import type { Extension } from '@codemirror/state'
+import CodeMirror, { EditorView } from '@uiw/react-codemirror'
+import { FormProvider } from 'react-hook-form'
 import { JSONTree } from 'react-json-tree'
 
 import {
@@ -17,24 +20,24 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
 } from '@/components/ui'
 
-import { DEFAULT_CODE, DEFAULT_SELECTOR, lightTheme } from './constants'
+import { lightTheme } from './constants'
 import { ExampleSelector } from './example-selector'
-import type { IForm } from './types'
 import { useApp } from './use-app'
 
+const theme = EditorView.baseTheme({
+  '.highlighted-line': { backgroundColor: 'oklch(95.4% 0.038 75.164)' },
+})
+
 export const App = () => {
-  const form = useForm<IForm>({
-    defaultValues: {
-      source: DEFAULT_CODE,
-      selector: DEFAULT_SELECTOR,
-      type: 'custom',
-    },
-    shouldUnregister: false,
-  })
-  const { node, isLoading, isError, onSubmit } = useApp()
+  const { node, isLoading, isError, onSubmit, form, highlightExtension } =
+    useApp()
+  const extensions = [
+    theme,
+    highlightExtension,
+    javascript({ jsx: true, typescript: true }),
+  ].filter(Boolean) as Extension[]
 
   return (
     <main className="w-full m-auto p-8 flex flex-col gap-8 items-center">
@@ -108,7 +111,7 @@ export const App = () => {
                         <FormItem>
                           <FormLabel>TypeScript code</FormLabel>
                           <FormControl>
-                            <Textarea placeholder="Source code" {...field} />
+                            <CodeMirror extensions={extensions} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
